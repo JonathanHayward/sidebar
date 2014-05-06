@@ -61,7 +61,9 @@ gets stdin
 proc interview {} {
 global absoluteSnippetsPath
 global filePrefix
+global fullProgramName
 global fullTclPath
+global programMode
 
 puts -nonewline "\
 \nWhat is the full path to the Tcl executable (usually tclsh)?\
@@ -74,6 +76,11 @@ puts -nonewline "\
 \n\
 \nAbsolute path"
 set absoluteSnippetsPath [getValue $absoluteSnippetsPath]
+puts -nonewline\
+"\nWhat is the private $fullProgramName data directory?\
+\n\
+\nPrivate data directory"
+set filePrefix [getValue $filePrefix]
 puts -nonewline "\
 \nYou have selected the following options:\
 \n"
@@ -81,6 +88,8 @@ puts -nonewline\
 "\n\tAbsolute path to script: $absoluteSnippetsPath"
 puts -nonewline\
 "\n\tFull path to Tcl: $fullTclPath"
+puts -nonewline\
+"\n\tPrivate $programMode data directory: $filePrefix"
 puts -nonewline "\n\
 \nAre these options all correct (yes/no)"
 if {[isTrue [getValue "yes"]]} {
@@ -165,7 +174,9 @@ proc substitute {filename tag value} {
 proc upgrade {} {
 	global absoluteSnippetsPath
 	global filePrefix
+	global fullProgramName
 	global fullTclPath
+	global programMode
 	puts -nonewline "\nUpgrading...\n"
 	exec cp $programMode $absoluteSnippetsPath
 	exec chmod 600 $absoluteSnippetsPath
@@ -174,9 +185,9 @@ proc upgrade {} {
 		"[removeTrailingSlash $filePrefix]/general/config"
 	exec chmod 755 $absoluteSnippetsPath
 	puts -nonewline \
-"\nThe upgrade is complete.  Further information about $fullProgramMode is\
+"\nThe upgrade is complete.  Further information about $fullProgramName is\
 \navailable in the README file.  If you'd like to know how to get the best out\
-\nof $fullProgramMode, please read it.\
+\nof $fullProgramName, please read it.\
 \n"
 	switch $programMode {
 		snippets {

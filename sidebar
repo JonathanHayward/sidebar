@@ -136,7 +136,6 @@ proc URLDecode {url} {
 #Slightly adapted from procedures e-mailed by Stuart Cassoff.
 proc loadConfigFile {cfg_file} {
 	 global configOptions configResult
-	 #debugLog "lcf1"
      if {[catch {set f [open $cfg_file r]}]} {
 	return 0
      }
@@ -210,13 +209,11 @@ proc loadConfigFile {cfg_file} {
 	}
 	# Does this correspond to a valid option?
 	set opt_name [lindex $line 0]
-	 #debugLog "lcf2 $opt_name [lindex $line 1]"
 	set opt_pos [lsearch -exact $configOptions $opt_name]
 	if {$opt_pos == -1} {
 	    continue
 	}
 	# Set option
-	 #debugLog "lcf3 $opt_name [lindex $line 1]"
 	set configResult($opt_name) [lindex $line 1]
 	set ok 1
      }
@@ -826,11 +823,8 @@ proc getConfigFilename {} {
 
 proc getConfigValue {key default} {
 	global configResult
-	#debugLog "gcv1 $key $default"
 	foreach candidateKey [array names configResult] {
-		#debugLog "gcv1.1 $candidateKey"
 		if {$candidateKey == $key} {
-			#debugLog "gcv2 $configResult($key)"
 			return $configResult($key)
 		}
 	}
@@ -1283,8 +1277,8 @@ proc init {} {
 	global resultArray
 	global userNotifiedOfLock
 	#One of the following two lines should be uncommented.
-	set debugMode 1
-	#set debugMode 0
+	#set debugMode 1
+	set debugMode 0
 	debugLog "Starting processing..."
 	puts "Content-type: text/html"
 	puts ""
@@ -1506,7 +1500,7 @@ proc listUsers {} {
 }
 
 proc logMessage {message} {
-	puts stderr "[getProgramMode] \[[clock format [clock seconds]]\]: $message"
+	puts stderr "[getProgramName] \[[clock format [clock seconds]]\]: $message"
 }
 
 # New CGI variables should be listed here.
@@ -1669,9 +1663,18 @@ proc processAccountManagement {} {
 				selected have been added.</strong></p>"
 		}
 		"changePassword" {
-			if {[authenticateInternal [getUserName]\
+			switch -exact [getProgramMode] {
+				sidebar {
+					set userName [CGIValue login]
+				}
+				snippets -
+				default {
+					set userName [getUserName]
+				}
+			}
+			if {[authenticateInternal $userName\
 				[CGIValue changePasswordOld]]} {
-				if {[changePassword [getUserName] [CGIValue changePasswordNew]\
+				if {[changePassword $userName [CGIValue changePasswordNew]\
 					[CGIValue changePasswordDuplicate]]} {
 					set accountManagementResult "<p><strong>You have\
 						successfully changed your password.</strong></p>"
