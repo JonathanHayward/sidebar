@@ -123,9 +123,12 @@ proc install {} {
 	global shouldAllowLoginCreation
 	global shouldAllowWikiAccess
 	puts "\nInstalling..."
-	exec cp $programMode $absoluteSnippetsPath
-	exec chmod 600 $absoluteSnippetsPath
-	substitute "$absoluteSnippetsPath" "FULL_TCL_PATH" "$fullTclPath"
+	#exec cp $programMode $absoluteSnippetsPath
+	exec cp $programMode "/tmp/sidebar"
+	#exec chmod 600 $absoluteSnippetsPath
+	exec chmod 600 "/tmp/sidebar"
+	#substitute "$absoluteSnippetsPath" "FULL_TCL_PATH" "$fullTclPath"
+	substitute "/tmp/sidebar" "FULL_TCL_PATH" "$fullTclPath"
 	exec rm -rf $filePrefix
 	exec cp -r data $filePrefix
 	exec chmod -R 777 $filePrefix
@@ -145,7 +148,7 @@ proc install {} {
 			\"administrator\" \"\""
 		close $appendId
 	}
-	substitute "$absoluteSnippetsPath" "CONFIG_FILENAME"\
+	substitute "/tmp/sidebar" "CONFIG_FILENAME"\
 		"[removeTrailingSlash $filePrefix]/general/config"
 	substitute "[removeTrailingSlash $filePrefix]/general/config"\
 		"PROGRAM_MODE" "$programMode"
@@ -190,7 +193,8 @@ proc install {} {
 		"$administratorPassword"
 	substitute "[removeTrailingSlash $filePrefix]/general/footer"\
 		"FULL_BASE_URL" "$fullBaseURL"
-	exec chmod 755 $absoluteSnippetsPath
+	exec chmod 755 "/tmp/sidebar"
+	exec mv "/tmp/sidebar" "$absoluteSnippetsPath"
 	puts -nonewline\
 "\nInstallation is complete.  Further information about $fullProgramName\
 \nis available in the README file.  If you'd like to know how to get the best\
@@ -265,7 +269,7 @@ puts -nonewline "\
 \n$fullProgramName web documents to be stored in?\
 \n\
 \n** WARNING: If you have anything at that location before $fullProgramName\
-\n** installed, it will be deleted.
+\n** is installed, it will be deleted.\
 \n\
 \n$fullProgramName public HTML directory"
 set absoluteSnippetsDocumentRoot [getValue $absoluteSnippetsDocumentRoot]

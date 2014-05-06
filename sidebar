@@ -1,6 +1,10 @@
 #!FULL_TCL_PATH
 
 #
+# Sidebar is (c) 2001 by Jonathan Hayward, released under the Artistic
+# License, and comes with no warranty. Please visit my homepage at
+# http://JonathansCorner.com to see what else I've created--not just software.
+#
 # I'd like to thank the following people for helping me debug or otherwise
 # get this program in working order:
 #	Waidelich Burkhard
@@ -17,7 +21,7 @@
 #	and various other people from comp.lang.Tcl whose names I didn't get down.
 #
 # Thanks also to Kapocs Web Design, kapocs.hypermart.net, for providing
-# attractive backgrounds for free download--including the one I used.
+# attractive backgrounds for free download.
 #
 
 set configFilename "CONFIG_FILENAME"
